@@ -142,14 +142,14 @@ public class MapGenerator : MonoBehaviour
 
     public IEnumerator MovePlayer()
     {
-        int i = playerPath.Count - 2;
+        int i = playerPath.Count - 1;
 
         PlayerController.instance.isMoving = true;
         moveButton.interactable = false;
 
         while (i >= 0)
         {
-            PlayerController.instance.MovePlayer(playerPath, i, true);
+            PlayerController.instance.MovePlayer(playerPath, i);
             i--;
             yield return new WaitForSeconds(.5f);
         }
@@ -166,7 +166,6 @@ public class MapGenerator : MonoBehaviour
             item.pathNotifier.gameObject.SetActive(false);
         }
 
-        moveButton.interactable = true;
         findEnemyDistance = true;
 
         yield return null;
@@ -190,8 +189,14 @@ public class MapGenerator : MonoBehaviour
         enemyX = (int)enemyPath[1].xPos;
         enemyZ = (int)enemyPath[1].zPos;
 
+        foreach (Blocks item in enemyPath)
+        {
+            item.pathNotifier.gameObject.SetActive(false);
+        }
+
         blocks[enemyX, enemyZ].isBlocked = true;
         PlayerController.instance.isMoving = false;
+        moveButton.interactable = true;
         yield return null;
     }
 
@@ -232,7 +237,7 @@ public class MapGenerator : MonoBehaviour
             Debug.Log("Cant Reach");
             return;
         }
-        for (int i = step; i > -1; i--)
+        for (int i = step; i > 0; i--)
         {
             if (TestDirection(x, y, i, MoveDirection.Up))
             {

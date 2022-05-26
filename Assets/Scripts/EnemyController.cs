@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour, AI
 
     public void MoveEnemy(List<Blocks> path, int i)
     {
-        nextPos = new Vector3(path[i].transform.position.x, 1, path[i].transform.position.z);
+        nextPos = new Vector3(path[i].transform.position.x, .5f, path[i].transform.position.z);
         transform.position = Vector3.MoveTowards(transform.position, nextPos, moveSpeed);
     }
 }

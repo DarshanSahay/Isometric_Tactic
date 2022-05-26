@@ -44,9 +44,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void MovePlayer(List<Blocks> path, int i, bool move)
+    public void MovePlayer(List<Blocks> path, int i)
     {
-        nextPos = new Vector3(path[i].transform.position.x, 1, path[i].transform.position.z);
+        nextPos = new Vector3(path[i].transform.position.x, 0.5f, path[i].transform.position.z);
         Move(nextPos);
     }
 
