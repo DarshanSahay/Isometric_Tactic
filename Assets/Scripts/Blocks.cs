@@ -13,13 +13,9 @@ public class Blocks : MonoBehaviour
 
     [SerializeField] private SpriteRenderer tileRenderer;
     public SpriteRenderer pathNotifier;
+    public SpriteRenderer obstacleNotifier;
 
     [SerializeField] private GameObject obstacle;
-
-    public void Test(Button button)
-    {
-        button.onClick.AddListener(ObstacleCall);
-    }
 
     public void ObstacleCall()
     {
@@ -28,12 +24,20 @@ public class Blocks : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        tileRenderer.gameObject.SetActive(true);
+        if(!isBlocked)
+        {
+            tileRenderer.gameObject.SetActive(true);
+        }
+        else
+        {
+            obstacleNotifier.gameObject.SetActive(true);
+        }
     }
 
     private void OnMouseExit()
     {
         tileRenderer.gameObject.SetActive(false);
+        obstacleNotifier.gameObject.SetActive(false);
     }
 
     public void EnableObstacle(GameObject obs)

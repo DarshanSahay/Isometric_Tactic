@@ -31,13 +31,15 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(raycast, out raycastHit) && raycastHit.collider.GetComponent<Blocks>() != null)
         {
             var block = raycastHit.collider.GetComponent<Blocks>();
-
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (block && !block.isBlocked)
             {
-                Debug.Log(block.xPos + "," + block.zPos);
-                map.movePointX = (int)block.xPos;
-                map.movePointZ = (int)block.zPos;
-                map.findDistance = true;
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    Debug.Log(block.xPos + "," + block.zPos);
+                    map.movePointX = (int)block.xPos;
+                    map.movePointZ = (int)block.zPos;
+                    map.findDistance = true;
+                }
             }
         }
     }

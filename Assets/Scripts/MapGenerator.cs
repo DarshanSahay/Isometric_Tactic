@@ -18,12 +18,6 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private int size;
     [SerializeField] private int scale;
 
-    [SerializeField] private Button[,] buttons = new Button[10, 10];
-    [SerializeField] private Button button;
-    [SerializeField] private GameObject buttonParent;
-
-    [SerializeField] private ObstacleManager obstacleManager;
-
     [SerializeField] private Blocks cube;
     [SerializeField] private Camera cam;
     [SerializeField] private Text posText;
@@ -52,7 +46,6 @@ public class MapGenerator : MonoBehaviour
         moveButton.onClick.AddListener(Movement);
         blocks = new Blocks[size, size];
 
-        CreateButtons();
         GenerateBlocks();
 
         PlayerInitialization();
@@ -80,18 +73,6 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    void CreateButtons()
-    {
-        for (int i = 0; i < size; i++)
-        {
-            for (int j = 0; j < size; j++)
-            {
-                buttons[i, j] = Instantiate(button, buttonParent.transform);
-                buttons[i, j].GetComponentInChildren<Text>().text = i + " - " + j;
-            }
-        }
-    }
-
     void GenerateBlocks()
     {
         for (float i = 0; i < size; i++)
@@ -102,7 +83,6 @@ public class MapGenerator : MonoBehaviour
                 Blocks b = blocks[(int)i, (int)j].GetComponent<Blocks>();
                 b.xPos = i;
                 b.zPos = j;
-                b.Test(buttons[(int)i, (int)j]);
             }
         }
     }
@@ -116,9 +96,12 @@ public class MapGenerator : MonoBehaviour
         {
             Transform objectHit = hit.transform;
             Blocks getBlock = objectHit.GetComponent<Blocks>();
-            posText.text = "Tile Position : " + getBlock.xPos + " - " + getBlock.zPos;
-            occText.text = "Ocuppied : " + getBlock.isOcuppied.ToString();
-            bloText.text = "Blocked : " + getBlock.isBlocked.ToString();
+            if(getBlock)
+            {
+                posText.text = "Tile Position : " + getBlock.xPos + " - " + getBlock.zPos;
+                occText.text = "Ocuppied : " + getBlock.isOcuppied.ToString();
+                bloText.text = "Blocked : " + getBlock.isBlocked.ToString();
+            }
         }
     }
 
@@ -163,7 +146,6 @@ public class MapGenerator : MonoBehaviour
 
         PlayerController.instance.isMoving = true;
         moveButton.interactable = false;
-        obstacleManager.StopButtonInteraction();
 
         while (i >= 0)
         {
@@ -185,7 +167,6 @@ public class MapGenerator : MonoBehaviour
         }
 
         moveButton.interactable = true;
-        obstacleManager.ResetButtonInteraction();
         findEnemyDistance = true;
 
         yield return null;
